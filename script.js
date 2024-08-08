@@ -12,6 +12,7 @@ const usernameInput = document.getElementById('username');
 const nameColorInput = document.getElementById('nameColor');
 const roomCodeInput = document.getElementById('roomCodeInput');
 const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+const inputArea = document.getElementById('inputArea');
 
 let currentUsername = 'Anonymous';
 let currentNameColor = '#FFFFFF'; // Default to white
@@ -38,6 +39,7 @@ joinRoom.addEventListener('click', () => {
   localStorage.setItem('roomCode', currentRoomCode);
   roomCodeDisplay.textContent = `Room Code: ${currentRoomCode}`;
   roomsPopup.style.display = 'none';
+  inputArea.style.display = 'flex'; // Show the input area
   fetchData();
 });
 
