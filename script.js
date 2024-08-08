@@ -21,6 +21,11 @@ closeSettings.addEventListener('click', () => {
 saveSettings.addEventListener('click', () => {
   currentUsername = usernameInput.value || 'Anonymous'; // Default to 'Anonymous' if empty
   currentNameColor = nameColorInput.value || '#FFFFFF'; // Default to white if empty
+
+  // Save settings to local storage
+  localStorage.setItem('username', currentUsername);
+  localStorage.setItem('color', currentNameColor);
+
   settingsPopup.style.display = 'none';
 });
 
