@@ -72,8 +72,8 @@
           currentRoomCode = roomInput.trim().toUpperCase();
           document.getElementById('roomCodeDisplay').innerText = `Room Code: ${currentRoomCode}`;
           document.getElementById('roomPopup').style.display = 'none';
-          document.getElementById('messageDisplay').style.display = 'block';
           document.getElementById('messageInput').style.display = 'block';
+          document.getElementById('messageDisplay').style.display = 'block';
           fetchData();
       }
   }
@@ -93,8 +93,8 @@
   </header>
 
   <nav id="navbar">
-        <a href="#" onclick="showPopup()">Chat</a>
-        <a href="#" onclick="showPopup()">Rooms</a>
+        <a href="index.html">Chat</a>
+        <a href="rooms.html">Rooms</a>
         <a id="settingsBtn" class="settings-btn">Settings</a>
         <a href="trips.html">About</a>
   </nav>

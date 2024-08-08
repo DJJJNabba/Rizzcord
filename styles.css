@@ -8,19 +8,19 @@ body, html {
   align-items: center;
   justify-content: center;
   background-color: #2E2E2E;
-  color: #FFFFFF;
+  color: #000;
 }
 
 .div2 {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Center children vertically */
   overflow: hidden;
   background-color: #383838;
   height: 50px;
   max-width: 1000px;
   margin: auto;
-  padding: 0 20px;
+  padding: 0 20px; /* Add some padding on the sides if needed */
 }
 
 @font-face {
@@ -34,7 +34,7 @@ body, html {
 }
 
 .message-display {
-  font-family: 'Gg Sans', sans-serif;
+  font-family: 'Gg Sans', sans-serif; /* Apply the font here */
   width: 80%;
   height: 80%;
   border: 1px solid #ccc;
@@ -47,25 +47,25 @@ body, html {
 
 .input-area {
   display: flex;
-  align-items: center;
-  width: 80%;
-  padding: 0;
+  align-items: center; /* This ensures vertical alignment */
+  width: 80%; /* Use 100% of .div2's width */
+  padding: 0; /* Reset padding */
   border-radius: 10px;
 }
 
 .share-btn {
-  padding: 0;
-  margin: 0 10px 0 0;
+  padding: 0; /* Adjust padding as necessary */
+  margin: 0 10px 0 0; /* Add margin to the right of the button */
   background: none;
   border: none;
   cursor: pointer;
-  align-self: center;
+  align-self: center; /* Centers the button vertically */
 }
 
 .message-input {
-  flex: 1;
+  flex: 1; /* Grow to remaining space */
   padding: 10px;
-  margin: 0;
+  margin: 0; /* Reset margin */
   border-radius: 10px;
   font-size: 16px;
   border: none;
@@ -83,35 +83,6 @@ body, html {
   display: none;
 }
 
-.room-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #444;
-  padding: 20px;
-  border: 1px solid #ccc;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.room-popup h2 {
-  margin-bottom: 10px;
-}
-
-.room-input {
-  margin-bottom: 10px;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.room-popup button {
-  padding: 10px 20px;
-  font-size: 16px;
-}
-
 label {
   display: block;
 }
@@ -127,56 +98,116 @@ input[type="text"], input[type="color"] {
 
 #banner {
   height: 60px;
-  background: url(RIZZcord.png);
+  background: url(RIZZcord.png); /*Sets the background to be animated gif*/
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size:cover;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /*Spaces any elements inside banner to space throughout*/
   align-items: center;
 }
 
+
+/*Styles the navbar*/
 nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /*Spaces the buttons across the bar*/
   overflow: hidden;
-  background-color: #333333;
+  background-color: #333333; /*Sets the navbar colour*/
   height: 50px;
   text-align: center;
   max-width: 1000px;
-  margin: auto;
+  margin:auto;
+  /*Smooths the bottom of navbar to seperate from pages*/
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
 }
 
+/*Styles text on navbar*/
 nav a {
   display: inline-block;
   justify-content: center;
   color: #f2f2f2;
   font-weight: bold;
-  text-align: justify;
+  text-align:justify;
   max-width: 1000px;
   max-height: 50px;
-  margin: auto;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  margin:auto;
+  /*Makes each button*/
+  padding-top:10px;
+  padding-bottom:10px;
   padding-left: 20px;
   padding-right: 20px;
   border-radius: 5;
   background-color: #333;
   text-decoration: none;
   font-size: 24px;
-  transition: all 800ms ease-out;
+  transition:all 800ms ease-out; /*Smoothes animation when not hovered on*/
 }
 
-nav a:hover {
-  background-color: rgb(38, 38, 38);
+
+nav a:hover { /*When the nav buttons are hovered, they will react to the user*/
+  background-color: rgb(38, 38, 38); /*Slightly changes the colour of the button*/
   border-radius: 15px;
+  /*transition:all 200ms;*/
 }
 
-.room-code-display {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  font-size: 24px;
-  font-weight: bold;
+#links { /*Styles the links page scrollbars*/
+  overflow-x: hidden; 
+  overflow-y: scroll;
+}
+
+#links #spacer { /*Styles a custom spacer for the links page*/
+  height: 600px;
+  margin:0px;
+  width: 1000px;
+  background-color: #222222;
+  color: #333;
+}
+
+#spacer { /*Sets default parameter for spacers*/
+  height: 100px;
+  color: #222222;
+}
+
+table { /*Styles the default table*/
+  background-color: #222222;
+}
+
+.paragraph { /*Styles paragraph elements*/
+  margin: 14px auto;
+  justify-content: center;
+  vertical-align:middle;
+  background-color: #222222;
+  padding-bottom: 32px;
+  border-radius: 25px;
+}
+
+.paragraph p1 { /*Styles the text in paragraphs*/
+  display: block;
+  font-size: 14px; 
+  margin-left: 18px;
+  margin-right: 18px;
+  margin-bottom: 18px;
+  }
+
+.paragraph img { /*Styles any images in paragraph elements*/
+  display: block;
+  margin-top: 0px auto;
+  margin-left: auto;
+  margin-right:auto;
+  border-radius: 9px;
+  border: 5px solid #000000;
+  transition:all 400ms ease; /*Animates images so when not hovered they return to normal*/
+}
+
+.paragraph img:hover { /*When paragraph elements are hovered, they react to the user*/
+  border-radius: 36px; /*The corners will change when hovered*/
+  transition:all 400ms ease; /*The border will cleanly transition over time when hovered*/
+}
+
+.message-input {
+  background: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
 }
