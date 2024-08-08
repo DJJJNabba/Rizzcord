@@ -6,7 +6,7 @@ const settingsPopup = document.getElementById('settingsPopup');
 const roomsPopup = document.getElementById('roomsPopup');
 const saveSettings = document.getElementById('saveSettings');
 const closeSettings = document.getElementById('closeSettings');
-const joinRoom = document.getElementById('joinRoom');
+const joinRoomBtn = document.getElementById('joinRoom');
 const closeRooms = document.getElementById('closeRooms');
 const usernameInput = document.getElementById('username');
 const nameColorInput = document.getElementById('nameColor');
@@ -34,7 +34,7 @@ closeRooms.addEventListener('click', () => {
   roomsPopup.style.display = 'none';
 });
 
-joinRoom.addEventListener('click', () => {
+joinRoomBtn.addEventListener('click', () => {
   currentRoomCode = roomCodeInput.value || '';
   localStorage.setItem('roomCode', currentRoomCode);
   roomCodeDisplay.textContent = `Room Code: ${currentRoomCode}`;
@@ -64,7 +64,7 @@ input.addEventListener('keypress', function(event) {
 roomCodeInput.addEventListener('keypress', function(event) {
   if (event.key === 'Enter') {
     event.preventDefault();
-    joinRoom.click();
+    joinRoomBtn.click();
   }
 });
 
@@ -75,7 +75,7 @@ async function sendData() {
   const roomCode = currentRoomCode;
 
   if (message.trim() !== '' && roomCode.trim() !== '') {
-    const response = await fetch('https://mud-shimmer-fossa.glitch.me/', {
+    const response = await fetch('https://mud-shimmer-fossa.glitch.me/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ async function fetchData() {
   const roomCode = currentRoomCode;
 
   if (roomCode.trim() !== '') {
-    const response = await fetch(`https://mud-shimmer-fossa.glitch.me/?roomCode=${roomCode}`);
+    const response = await fetch(`https://mud-shimmer-fossa.glitch.me/messages?roomCode=${roomCode}`);
     const data = await response.json();
     display.innerHTML = ''; // Clear display before updating
     data.messages.forEach(msg => {
@@ -110,4 +110,4 @@ async function fetchData() {
   }
 }
 
-setInterval(fetchData, 2000); // Fetch data every 2 seconds
+setInterval(fetchData, 1000); // Fetch data every 2 seconds

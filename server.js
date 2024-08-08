@@ -8,7 +8,7 @@ app.use(cors());
 
 let messages = [];
 
-app.get("/", (req, res) => {
+app.get("/messages", (req, res) => {
   const { roomCode } = req.query;
   if (roomCode) {
     const filteredMessages = messages.filter(msg => msg.roomCode === roomCode);
@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
   }
 });
 
-app.post("/", (req, res) => {
+app.post("/messages", (req, res) => {
   const { username, color, message, roomCode } = req.body;
   if (username && color && message && roomCode) {
     messages.push({ username, color, message, roomCode });
