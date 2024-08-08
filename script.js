@@ -73,4 +73,4 @@ async function fetchData() {
   });
 }
 
-setInterval(fetchData, 1000); // Fetch data every 2 seconds
+setInterval(fetchData, 2000); // Fetch data every 2 seconds
