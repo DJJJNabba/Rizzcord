@@ -4,19 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rizzcord</title>
+<link rel="stylesheet" href="styles.css">
 <script>
+  let currentRoomCode = '';
+
   async function sendData() {
       const message = document.getElementById('messageInput').value;
       const username = currentUsername || 'Anonymous';
       const color = currentNameColor || '#FFFFFF';
 
-      if (message.trim() !== '') {
+      if (message.trim() !== '' && currentRoomCode) {
           const response = await fetch('https://mud-shimmer-fossa.glitch.me/', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ username, color, message })
+              body: JSON.stringify({ username, color, message, roomCode: currentRoomCode })
           });
           const result = await response.json();
           console.log(result.message);
@@ -26,21 +29,23 @@
   }
 
   async function fetchData() {
-      const response = await fetch('https://mud-shimmer-fossa.glitch.me/');
-      const data = await response.json();
-      const display = document.getElementById('messageDisplay');
-      display.innerHTML = ''; // Clear display before updating
-      data.messages.forEach(msg => {
-          const newMessage = document.createElement('div');
-          const usernameSpan = document.createElement('span');
-          usernameSpan.textContent = msg.username + ': ';
-          usernameSpan.style.color = msg.color;
-          usernameSpan.style.minWidth = '100px';
-          usernameSpan.style.display = 'inline-block';
-          newMessage.appendChild(usernameSpan);
-          newMessage.appendChild(document.createTextNode(msg.message));
-          display.appendChild(newMessage);
-      });
+      if (currentRoomCode) {
+          const response = await fetch(`https://mud-shimmer-fossa.glitch.me/${currentRoomCode}`);
+          const data = await response.json();
+          const display = document.getElementById('messageDisplay');
+          display.innerHTML = ''; // Clear display before updating
+          data.messages.forEach(msg => {
+              const newMessage = document.createElement('div');
+              const usernameSpan = document.createElement('span');
+              usernameSpan.textContent = msg.username + ': ';
+              usernameSpan.style.color = msg.color;
+              usernameSpan.style.minWidth = '100px';
+              usernameSpan.style.display = 'inline-block';
+              newMessage.appendChild(usernameSpan);
+              newMessage.appendChild(document.createTextNode(msg.message));
+              display.appendChild(newMessage);
+          });
+      }
   }
 
   function loadSettings() {
@@ -56,40 +61,65 @@
       }
   }
 
+  function showPopup() {
+      const popup = document.getElementById('roomPopup');
+      popup.style.display = 'block';
+  }
+
+  function joinRoom() {
+      const roomInput = document.getElementById('roomInput').value;
+      if (roomInput.trim().length === 6) {
+          currentRoomCode = roomInput.trim().toUpperCase();
+          document.getElementById('roomCodeDisplay').innerText = `Room Code: ${currentRoomCode}`;
+          document.getElementById('roomPopup').style.display = 'none';
+          document.getElementById('messageInput').style.display = 'block';
+          document.getElementById('messageDisplay').style.display = 'block';
+          fetchData();
+      }
+  }
+
   window.onload = function() {
       loadSettings();
-      fetchData();
+      showPopup();
   };
 
   setInterval(fetchData, 2000); // Fetch data every 2 seconds
 </script>
-<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header id="banner" alt="MUMC Banner with logo"> <!--Animated banner with text and logo-->
+  <header id="banner">
     <h1></h1>
     <img src="RIZZcord.png" height="52px" width="296px" id="logo">
   </header>
 
-  <nav id="navbar"> <!--Places the navbar below the banner-->
-    <!--These buttons link to different pages of the site-->
+  <nav id="navbar">
         <a href="index.html">Chat</a>
         <a href="rooms.html">Rooms</a>
-        <a id="settingsBtn" class="settings-btn">Settings</a> <!-- Removed the closing button tag -->
+        <a id="settingsBtn" class="settings-btn">Settings</a>
         <a href="trips.html">About</a>
   </nav>
-<div id="messageDisplay" class="message-display"></div>
-<div class="input-area">
-  <input type="text" id="messageInput" class="message-input" placeholder="Type your message here...">
-</div>
-<div id="settingsPopup" class="settings-popup">
-  <label for="username">Username:</label>
-  <input type="text" id="username" placeholder="Enter Username">
-  <label for="nameColor">Name Color:</label>
-  <input type="color" id="nameColor" value="#FFFFFF"> <!-- Default to white -->
-  <button id="saveSettings">Save</button>
-  <button id="closeSettings">Close</button>
-</div>
+
+  <div id="roomCodeDisplay" class="room-code-display"></div>
+
+  <div id="messageDisplay" class="message-display" style="display:none;"></div>
+  <div class="input-area" style="display:none;">
+    <input type="text" id="messageInput" class="message-input" placeholder="Type your message here...">
+  </div>
+
+  <div id="roomPopup" class="room-popup">
+    <h2>Enter a Room Code</h2>
+    <input type="text" id="roomInput" class="room-input" placeholder="ABCDEF">
+    <button onclick="joinRoom()">Join</button>
+  </div>
+
+  <div id="settingsPopup" class="settings-popup">
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Enter Username">
+    <label for="nameColor">Name Color:</label>
+    <input type="color" id="nameColor" value="#FFFFFF">
+    <button id="saveSettings">Save</button>
+    <button id="closeSettings">Close</button>
+  </div>
 <script src="script.js"></script>
 </body>
 </html>
