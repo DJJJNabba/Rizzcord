@@ -1,12 +1,17 @@
 const input = document.getElementById('messageInput');
 const display = document.getElementById('messageDisplay');
 const settingsBtn = document.getElementById('settingsBtn');
+const roomsBtn = document.getElementById('roomsBtn');
 const settingsPopup = document.getElementById('settingsPopup');
+const roomsPopup = document.getElementById('roomsPopup');
 const saveSettings = document.getElementById('saveSettings');
 const closeSettings = document.getElementById('closeSettings');
+const joinRoom = document.getElementById('joinRoom');
+const closeRooms = document.getElementById('closeRooms');
 const usernameInput = document.getElementById('username');
 const nameColorInput = document.getElementById('nameColor');
-const roomCodeInput = document.getElementById('roomCode');
+const roomCodeInput = document.getElementById('roomCodeInput');
+const roomCodeDisplay = document.getElementById('roomCodeDisplay');
 
 let currentUsername = 'Anonymous';
 let currentNameColor = '#FFFFFF'; // Default to white
@@ -20,15 +25,29 @@ closeSettings.addEventListener('click', () => {
   settingsPopup.style.display = 'none';
 });
 
+roomsBtn.addEventListener('click', () => {
+  roomsPopup.style.display = 'block';
+});
+
+closeRooms.addEventListener('click', () => {
+  roomsPopup.style.display = 'none';
+});
+
+joinRoom.addEventListener('click', () => {
+  currentRoomCode = roomCodeInput.value || '';
+  localStorage.setItem('roomCode', currentRoomCode);
+  roomCodeDisplay.textContent = `Room Code: ${currentRoomCode}`;
+  roomsPopup.style.display = 'none';
+  fetchData();
+});
+
 saveSettings.addEventListener('click', () => {
   currentUsername = usernameInput.value || 'Anonymous'; // Default to 'Anonymous' if empty
   currentNameColor = nameColorInput.value || '#FFFFFF'; // Default to white if empty
-  currentRoomCode = roomCodeInput.value || '';
 
   // Save settings to local storage
   localStorage.setItem('username', currentUsername);
   localStorage.setItem('color', currentNameColor);
-  localStorage.setItem('roomCode', currentRoomCode);
 
   settingsPopup.style.display = 'none';
 });
@@ -43,7 +62,7 @@ input.addEventListener('keypress', function(event) {
 roomCodeInput.addEventListener('keypress', function(event) {
   if (event.key === 'Enter') {
     event.preventDefault();
-    fetchData();
+    joinRoom.click();
   }
 });
 
