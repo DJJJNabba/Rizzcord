@@ -72,7 +72,7 @@ body, html {
   outline: none;
 }
 
-.settings-popup {
+.settings-popup, .rooms-popup {
   position: fixed;
   top: 20%;
   left: 50%;
@@ -210,4 +210,12 @@ table { /*Styles the default table*/
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
+}
+
+.room-code-display {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #FFFFFF;
+  font-size: 18px;
 }

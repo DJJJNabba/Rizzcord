@@ -66,7 +66,7 @@
       }
       if (savedRoomCode) {
           currentRoomCode = savedRoomCode;
-          document.getElementById('roomCode').value = savedRoomCode;
+          document.getElementById('roomCodeDisplay').textContent = `Room Code: ${savedRoomCode}`;
       }
   }
 
@@ -88,14 +88,20 @@
   <nav id="navbar"> <!--Places the navbar below the banner-->
     <!--These buttons link to different pages of the site-->
         <a href="index.html">Chat</a>
-        <a href="rooms.html">Rooms</a>
+        <a href="#" id="roomsBtn">Rooms</a>
         <a id="settingsBtn" class="settings-btn">Settings</a> <!-- Removed the closing button tag -->
         <a href="trips.html">About</a>
   </nav>
+<div id="roomCodeDisplay" class="room-code-display"></div>
 <div id="messageDisplay" class="message-display"></div>
 <div class="input-area">
-  <input type="text" id="roomCode" class="room-code-input" placeholder="Enter Room Code...">
   <input type="text" id="messageInput" class="message-input" placeholder="Type your message here...">
+</div>
+<div id="roomsPopup" class="rooms-popup">
+  <label for="roomCodeInput">Enter Room Code:</label>
+  <input type="text" id="roomCodeInput" maxlength="6" placeholder="6-letter code">
+  <button id="joinRoom">Join Room</button>
+  <button id="closeRooms">Close</button>
 </div>
 <div id="settingsPopup" class="settings-popup">
   <label for="username">Username:</label>
