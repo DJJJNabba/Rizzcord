@@ -7,19 +7,207 @@ body, html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #2E2E2E;
+  color: #000;
+}
+
+.div2 {
+  display: flex;
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Center children vertically */
+  overflow: hidden;
+  background-color: #383838;
+  height: 50px;
+  max-width: 1000px;
+  margin: auto;
+  padding: 0 20px; /* Add some padding on the sides if needed */
+}
+
+@font-face {
+  font-family: 'Gg Sans';
+  src: local('Gg Sans Medium'), local('Gg-Sans-Medium'),
+      url('ggsans-Medium.woff2') format('woff2'),
+      url('ggsans-Medium.woff') format('woff'),
+      url('ggsans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
 }
 
 .message-display {
+  font-family: 'Gg Sans', sans-serif; /* Apply the font here */
   width: 80%;
-  height: 90%;
+  height: 80%;
   border: 1px solid #ccc;
   padding: 10px;
   overflow-y: auto;
   margin-bottom: 10px;
+  margin-top: 0px;
+  color: #FFFFFF;
+}
+
+.input-area {
+  display: flex;
+  align-items: center; /* This ensures vertical alignment */
+  width: 80%; /* Use 100% of .div2's width */
+  padding: 0; /* Reset padding */
+  border-radius: 10px;
+}
+
+.share-btn {
+  padding: 0; /* Adjust padding as necessary */
+  margin: 0 10px 0 0; /* Add margin to the right of the button */
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-self: center; /* Centers the button vertically */
 }
 
 .message-input {
-  width: 80%;
+  flex: 1; /* Grow to remaining space */
   padding: 10px;
+  margin: 0; /* Reset margin */
+  border-radius: 10px;
   font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+.settings-popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ccc;
+  display: none;
+}
+
+label {
+  display: block;
+}
+
+input[type="text"], input[type="color"] {
+  margin-bottom: 10px;
+}
+
+.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+
+#banner {
+  height: 60px;
+  background: url(RIZZcord.png); /*Sets the background to be animated gif*/
+  background-repeat: no-repeat;
+  background-size:cover;
+  display: flex;
+  justify-content: space-between; /*Spaces any elements inside banner to space throughout*/
+  align-items: center;
+}
+
+
+/*Styles the navbar*/
+nav {
+  display: flex;
+  justify-content: space-between; /*Spaces the buttons across the bar*/
+  overflow: hidden;
+  background-color: #333333; /*Sets the navbar colour*/
+  height: 50px;
+  text-align: center;
+  max-width: 1000px;
+  margin:auto;
+  /*Smooths the bottom of navbar to seperate from pages*/
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+/*Styles text on navbar*/
+nav a {
+  display: inline-block;
+  justify-content: center;
+  color: #f2f2f2;
+  font-weight: bold;
+  text-align:justify;
+  max-width: 1000px;
+  max-height: 50px;
+  margin:auto;
+  /*Makes each button*/
+  padding-top:10px;
+  padding-bottom:10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 5;
+  background-color: #333;
+  text-decoration: none;
+  font-size: 24px;
+  transition:all 800ms ease-out; /*Smoothes animation when not hovered on*/
+}
+
+
+nav a:hover { /*When the nav buttons are hovered, they will react to the user*/
+  background-color: rgb(38, 38, 38); /*Slightly changes the colour of the button*/
+  border-radius: 15px;
+  /*transition:all 200ms;*/
+}
+
+#links { /*Styles the links page scrollbars*/
+  overflow-x: hidden; 
+  overflow-y: scroll;
+}
+
+#links #spacer { /*Styles a custom spacer for the links page*/
+  height: 600px;
+  margin:0px;
+  width: 1000px;
+  background-color: #222222;
+  color: #333;
+}
+
+#spacer { /*Sets default parameter for spacers*/
+  height: 100px;
+  color: #222222;
+}
+
+table { /*Styles the default table*/
+  background-color: #222222;
+}
+
+.paragraph { /*Styles paragraph elements*/
+  margin: 14px auto;
+  justify-content: center;
+  vertical-align:middle;
+  background-color: #222222;
+  padding-bottom: 32px;
+  border-radius: 25px;
+}
+
+.paragraph p1 { /*Styles the text in paragraphs*/
+  display: block;
+  font-size: 14px; 
+  margin-left: 18px;
+  margin-right: 18px;
+  margin-bottom: 18px;
+  }
+
+.paragraph img { /*Styles any images in paragraph elements*/
+  display: block;
+  margin-top: 0px auto;
+  margin-left: auto;
+  margin-right:auto;
+  border-radius: 9px;
+  border: 5px solid #000000;
+  transition:all 400ms ease; /*Animates images so when not hovered they return to normal*/
+}
+
+.paragraph img:hover { /*When paragraph elements are hovered, they react to the user*/
+  border-radius: 36px; /*The corners will change when hovered*/
+  transition:all 400ms ease; /*The border will cleanly transition over time when hovered*/
+}
+
+.message-input {
+  background: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
 }

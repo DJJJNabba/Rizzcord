@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Gg Sans';
+    src: local('Gg Sans Medium'), local('Gg-Sans-Medium'),
+        url('ggsans-Medium.woff2') format('woff2'),
+        url('ggsans-Medium.woff') format('woff'),
+        url('ggsans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
