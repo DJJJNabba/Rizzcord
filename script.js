@@ -6,7 +6,7 @@ const settingsPopup = document.getElementById('settingsPopup');
 const roomsPopup = document.getElementById('roomsPopup');
 const saveSettings = document.getElementById('saveSettings');
 const closeSettings = document.getElementById('closeSettings');
-const joinRoomBtn = document.getElementById('joinRoom');
+const joinRoomBtn = document.getElementById('joinRoomBtn');
 const closeRooms = document.getElementById('closeRooms');
 const usernameInput = document.getElementById('username');
 const nameColorInput = document.getElementById('nameColor');
@@ -110,4 +110,4 @@ async function fetchData() {
   }
 }
 
-setInterval(fetchData, 1000); // Fetch data every 2 seconds
+setInterval(fetchData, 2000); // Fetch data every 2 seconds
