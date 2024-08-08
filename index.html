@@ -43,6 +43,24 @@
       });
   }
 
+  function loadSettings() {
+      const savedUsername = localStorage.getItem('username');
+      const savedColor = localStorage.getItem('color');
+      if (savedUsername) {
+          currentUsername = savedUsername;
+          document.getElementById('username').value = savedUsername;
+      }
+      if (savedColor) {
+          currentNameColor = savedColor;
+          document.getElementById('nameColor').value = savedColor;
+      }
+  }
+
+  window.onload = function() {
+      loadSettings();
+      fetchData();
+  };
+
   setInterval(fetchData, 2000); // Fetch data every 2 seconds
 </script>
 <link rel="stylesheet" href="styles.css">
