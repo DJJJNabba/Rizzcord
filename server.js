@@ -1,25 +1,43 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path");
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static("public"));
 
-let messages = [];
+let rooms = {}; // Object to hold messages for different rooms
 
-app.get("/", (req, res) => {
-  res.json({ messages });
+// API endpoint to get messages for a specific room
+app.get("/api/rooms/:roomCode", (req, res) => {
+  const roomCode = req.params.roomCode;
+  if (!rooms[roomCode]) {
+    rooms[roomCode] = [];
+  }
+  res.json({ messages: rooms[roomCode] });
 });
 
-app.post("/", (req, res) => {
+// API endpoint to post messages to a specific room
+app.post("/api/rooms/:roomCode", (req, res) => {
+  const roomCode = req.params.roomCode;
   const { username, color, message } = req.body;
   if (username && color && message) {
-    messages.push({ username, color, message });
+    if (!rooms[roomCode]) {
+      rooms[roomCode] = [];
+    }
+    rooms[roomCode].push({ username, color, message });
+    console.log(`Message received in room ${roomCode}:`, { username, color, message });
     res.json({ message: "Message received!" });
   } else {
     res.status(400).json({ message: "Invalid data" });
   }
+});
+
+// Serve the index.html file for any other route
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
