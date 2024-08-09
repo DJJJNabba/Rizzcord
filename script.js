@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
   }
 
-  if (window.location.pathname === '/Rizzcord/' || window.location.pathname.endsWith('index.html')) {
+  if (window.location.pathname.endsWith('index.html')) {
     const recentRoomCode = localStorage.getItem('recentRoomCode');
     if (recentRoomCode) {
       window.location.href = `rooms.html#${recentRoomCode}`;
@@ -77,7 +77,6 @@ let currentUsername = 'Anonymous';
 let currentNameColor = '#FFFFFF';
 let roomCode = '';
 
-// Load settings from local storage
 function loadSettings() {
   const savedUsername = localStorage.getItem('username');
   const savedColor = localStorage.getItem('color');
@@ -91,7 +90,6 @@ function loadSettings() {
   }
 }
 
-// Set room code from URL hash and save it to local storage
 function setRoomCode() {
   const hash = window.location.hash.substring(1); // Get the hash part of the URL
   if (hash) {
@@ -103,7 +101,6 @@ function setRoomCode() {
   }
 }
 
-// Save the room code to recent rooms in local storage
 function saveRecentRoom(roomCode) {
   let recentRooms = JSON.parse(localStorage.getItem('recentRooms')) || [];
   recentRooms = recentRooms.filter(code => code !== roomCode);
@@ -112,7 +109,6 @@ function saveRecentRoom(roomCode) {
   localStorage.setItem('recentRooms', JSON.stringify(recentRooms));
 }
 
-// Display the recent rooms
 function displayRecentRooms() {
   const recentRooms = JSON.parse(localStorage.getItem('recentRooms')) || [];
   const recentRoomsContainer = document.getElementById('recentRooms');
@@ -128,7 +124,6 @@ function displayRecentRooms() {
   }
 }
 
-// Send message to the server
 async function sendData() {
   const message = document.getElementById('messageInput').value;
   if (message.trim() !== '') {
@@ -143,14 +138,13 @@ async function sendData() {
       const result = await response.json();
       console.log(result.message);
       fetchData();
-      document.getElementById('messageInput').value = ''; // Clear input after sending
+      document.getElementById('messageInput').value = '';
     } catch (error) {
       console.error('Error sending message:', error);
     }
   }
 }
 
-// Fetch messages from the server
 async function fetchData() {
   try {
     const response = await fetch(`/Rizzcord/api/rooms/${roomCode}`);
@@ -180,14 +174,13 @@ async function fetchData() {
         newMessage.appendChild(messageContent);
         display.appendChild(newMessage);
       });
-      twemoji.parse(display); // Render emojis
+      twemoji.parse(display);
     }
   } catch (error) {
     console.error('Error fetching messages:', error);
   }
 }
 
-// Join a room
 function joinRoom() {
   const roomCode = document.getElementById('roomCodeInput').value.trim();
   if (roomCode !== '') {
@@ -197,51 +190,15 @@ function joinRoom() {
   }
 }
 
-// Create a new room
 function createRoom() {
   const roomCode = generateRoomCode();
   window.location.href = `rooms.html#${roomCode}`;
 }
 
-// Generate a random room code
 function generateRoomCode() {
   return Math.random().toString(36).substring(2, 8);
 }
 
-// Parse markup for formatting and emojis
-function parseMarkup(text) {
-  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  text = text.replace(/__(.*?)__/g, '<strong>$1</strong>');
-
-  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  text = text.replace(/_(.*?)_/g, '<em>$1</em>');
-
-  text = text.replace(/~~(.*?)~~/g, '<del>$1</del>');
-
-  text = text.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
-  text = text.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
-  text = text.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
-
-  text = text.replace(/^\* (.*?)$/gm, '<ul><li>$1</li></ul>');
-  text = text.replace(/^- (.*?)$/gm, '<ul><li>$1</li></ul>');
-  text = text.replace(/<\/ul>\n<ul>/g, '');
-
-  text = text.replace(/^\d+\. (.*?)$/gm, '<ol><li>$1</li></ol>');
-  text = text.replace(/<\/ol>\n<ol>/g, '');
-
-  text = text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
-
-  text = text.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto;">');
-
-  text = text.replace(/:([a-zA-Z0-9_+-]+):/g, (match, p1) => {
-    const emojiUrl = `https://twemoji.maxcdn.com/v/latest/svg/${twemoji.convert.toCodePoint(p1)}.svg`;
-    return `<img src="${emojiUrl}" class="emoji" alt="${p1}">`;
-  });
-
-  return text;
-}
-
-// Simplified Emoji Rendering
 function parseMarkup(text) {
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/__(.*?)__/g, '<strong>$1</strong>');
