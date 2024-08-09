@@ -125,7 +125,6 @@ function showRoomsPage() {
   }
 }
 
-
 async function sendData() {
   const message = document.getElementById('messageInput').value;
   if (message.trim() !== '') {
