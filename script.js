@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const closeSettings = document.getElementById('closeSettings');
   const usernameInput = document.getElementById('username');
   const nameColorInput = document.getElementById('nameColor');
-  const chatLink = document.querySelector('nav a[href="/index.html"]');
+  const chatLink = document.querySelector('nav a[href="/Rizzcord/index.html"]');
 
   if (settingsBtn) {
     settingsBtn.addEventListener('click', () => {
@@ -33,12 +33,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
 
   // Redirect new users or open recent room for returning users
-  if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+  if (window.location.pathname === '/Rizzcord/' || window.location.pathname === '/Rizzcord/index.html') {
     const recentRoomCode = localStorage.getItem('recentRoomCode');
     if (recentRoomCode) {
-      window.location.href = `/rooms/${recentRoomCode}`;
+      window.location.href = `/Rizzcord/rooms/${recentRoomCode}`;
     } else {
-      window.location.href = '/rooms.html';
+      window.location.href = '/Rizzcord/rooms.html';
     }
   }
 
@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
       event.preventDefault();
       const recentRoomCode = localStorage.getItem('recentRoomCode');
       if (recentRoomCode) {
-        window.location.href = `/rooms/${recentRoomCode}`;
+        window.location.href = `/Rizzcord/rooms/${recentRoomCode}`;
       } else {
-        window.location.href = '/rooms.html';
+        window.location.href = '/Rizzcord/rooms.html';
       }
     });
   }
@@ -96,8 +96,8 @@ function loadSettings() {
 // Set room code from URL and save it to local storage
 function setRoomCode() {
   const pathSegments = window.location.pathname.split('/');
-  if (pathSegments.length > 2 && pathSegments[1] === 'rooms') {
-    roomCode = pathSegments[2];
+  if (pathSegments.length > 3 && pathSegments[2] === 'rooms') {
+    roomCode = pathSegments[3];
     saveRecentRoom(roomCode);
     localStorage.setItem('recentRoomCode', roomCode);
   } else {
@@ -122,7 +122,7 @@ function displayRecentRooms() {
     recentRoomsContainer.innerHTML = '';
     recentRooms.forEach(roomCode => {
       const roomLink = document.createElement('a');
-      roomLink.href = `/rooms/${roomCode}`;
+      roomLink.href = `/Rizzcord/rooms/${roomCode}`;
       roomLink.textContent = roomCode;
       roomLink.className = 'recent-room';
       recentRoomsContainer.appendChild(roomLink);
@@ -135,7 +135,7 @@ async function sendData() {
   const message = document.getElementById('messageInput').value;
   if (message.trim() !== '') {
     try {
-      const response = await fetch(`/api/rooms/${roomCode}`, {
+      const response = await fetch(`/Rizzcord/api/rooms/${roomCode}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -155,7 +155,7 @@ async function sendData() {
 // Fetch messages from the server
 async function fetchData() {
   try {
-    const response = await fetch(`/api/rooms/${roomCode}`);
+    const response = await fetch(`/Rizzcord/api/rooms/${roomCode}`);
     const data = await response.json();
     const display = document.getElementById('messageDisplay');
     if (display) {
@@ -189,20 +189,20 @@ async function fetchData() {
   }
 }
 
-// Join room by navigating to the room URL
+// Function to join a room
 function joinRoom() {
   const roomCode = document.getElementById('roomCodeInput').value.trim();
   if (roomCode !== '') {
-    window.location.href = `/rooms/${roomCode}`;
+    window.location.href = `/Rizzcord/rooms/${roomCode}`;
   } else {
     alert('Please enter a room code.');
   }
 }
 
-// Create a new room with a generated room code
+// Function to create a new room
 function createRoom() {
   const roomCode = generateRoomCode();
-  window.location.href = `/rooms/${roomCode}`;
+  window.location.href = `/Rizzcord/rooms/${roomCode}`;
 }
 
 // Generate a random room code
@@ -252,6 +252,7 @@ function parseMarkup(text) {
   return text;
 }
 
+// Simplified Emoji Rendering for specific emojis
 function parseMarkup(text) {
   // Bold
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -293,4 +294,3 @@ function parseMarkup(text) {
 
   return text;
 }
-
