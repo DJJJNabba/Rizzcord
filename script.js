@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
   }
 
-  if (window.location.pathname.endsWith('index.html')) {
+  // Redirect new users or open recent room for returning users
+  if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/Rizzcord/') {
     const recentRoomCode = localStorage.getItem('recentRoomCode');
     if (recentRoomCode) {
       window.location.href = `rooms.html#${recentRoomCode}`;
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   loadSettings();
   setRoomCode();
   fetchData();
-  setInterval(fetchData, 2000);
+  setInterval(fetchData, 2000); // Fetch data every 2 seconds
 
   const messageInput = document.getElementById('messageInput');
   if (messageInput) {
@@ -131,7 +132,6 @@ window.addEventListener('hashchange', function() {
   fetchData();
 });
 
-
 async function sendData() {
   const message = document.getElementById('messageInput').value;
   if (message.trim() !== '') {
@@ -182,7 +182,7 @@ async function fetchData() {
         newMessage.appendChild(messageContent);
         display.appendChild(newMessage);
       });
-      twemoji.parse(display);
+      twemoji.parse(display); // Render emojis
     }
   } catch (error) {
     console.error('Error fetching messages:', error);
