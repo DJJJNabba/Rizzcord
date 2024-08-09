@@ -55,6 +55,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
   displayRecentRooms();
 });
 
+function joinRoom() {
+  const roomCode = document.getElementById('roomCodeInput').value.trim();
+  if (roomCode !== '') {
+    window.location.href = `#/rooms/${roomCode}`;
+  } else {
+    alert('Please enter a room code.');
+  }
+}
+
+
 let currentUsername = 'Anonymous';
 let currentNameColor = '#FFFFFF';
 let roomCode = '';
@@ -102,10 +112,19 @@ function showChatRoom() {
 
 // Function to show the rooms page interface
 function showRoomsPage() {
-  document.getElementById('messageDisplay').style.display = 'none';
-  document.querySelector('.input-area').style.display = 'none';
-  document.querySelector('.room-container').style.display = 'block';
+  const messageDisplay = document.getElementById('messageDisplay');
+  const inputArea = document.querySelector('.input-area');
+  const roomContainer = document.querySelector('.room-container');
+
+  if (messageDisplay && inputArea && roomContainer) {
+    messageDisplay.style.display = 'none';
+    inputArea.style.display = 'none';
+    roomContainer.style.display = 'block';
+  } else {
+    console.error("One or more elements are missing on the page.");
+  }
 }
+
 
 async function sendData() {
   const message = document.getElementById('messageInput').value;
