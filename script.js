@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const closeSettings = document.getElementById('closeSettings');
   const usernameInput = document.getElementById('username');
   const nameColorInput = document.getElementById('nameColor');
-  const chatLink = document.querySelector('nav a[href="/Rizzcord/index.html"]');
+  const chatLink = document.querySelector('nav a[href="index.html"]');
 
   if (settingsBtn) {
     settingsBtn.addEventListener('click', () => {
@@ -21,10 +21,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   if (saveSettings) {
     saveSettings.addEventListener('click', () => {
-      currentUsername = usernameInput.value || 'Anonymous'; // Default to 'Anonymous' if empty
-      currentNameColor = nameColorInput.value || '#FFFFFF'; // Default to white if empty
+      currentUsername = usernameInput.value || 'Anonymous';
+      currentNameColor = nameColorInput.value || '#FFFFFF';
 
-      // Save settings to local storage
       localStorage.setItem('username', currentUsername);
       localStorage.setItem('color', currentNameColor);
 
@@ -32,13 +31,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
   }
 
-  // Redirect new users or open recent room for returning users
-  if (window.location.pathname === '/Rizzcord/' || window.location.pathname === '/Rizzcord/index.html') {
+  if (window.location.pathname === '/Rizzcord/' || window.location.pathname.endsWith('index.html')) {
     const recentRoomCode = localStorage.getItem('recentRoomCode');
     if (recentRoomCode) {
-      window.location.href = `/Rizzcord/rooms/${recentRoomCode}`;
+      window.location.href = `rooms.html#${recentRoomCode}`;
     } else {
-      window.location.href = '/Rizzcord/rooms.html';
+      window.location.href = 'rooms.html';
     }
   }
 
@@ -47,9 +45,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
       event.preventDefault();
       const recentRoomCode = localStorage.getItem('recentRoomCode');
       if (recentRoomCode) {
-        window.location.href = `/Rizzcord/rooms/${recentRoomCode}`;
+        window.location.href = `rooms.html#${recentRoomCode}`;
       } else {
-        window.location.href = '/Rizzcord/rooms.html';
+        window.location.href = 'rooms.html';
       }
     });
   }
@@ -57,7 +55,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   loadSettings();
   setRoomCode();
   fetchData();
-  setInterval(fetchData, 2000); // Fetch data every 2 seconds
+  setInterval(fetchData, 2000);
 
   const messageInput = document.getElementById('messageInput');
   if (messageInput) {
@@ -76,7 +74,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 let currentUsername = 'Anonymous';
-let currentNameColor = '#FFFFFF'; // Default to white
+let currentNameColor = '#FFFFFF';
 let roomCode = '';
 
 // Load settings from local storage
@@ -93,24 +91,24 @@ function loadSettings() {
   }
 }
 
-// Set room code from URL and save it to local storage
+// Set room code from URL hash and save it to local storage
 function setRoomCode() {
-  const pathSegments = window.location.pathname.split('/');
-  if (pathSegments.length > 3 && pathSegments[2] === 'rooms') {
-    roomCode = pathSegments[3];
+  const hash = window.location.hash.substring(1); // Get the hash part of the URL
+  if (hash) {
+    roomCode = hash;
     saveRecentRoom(roomCode);
     localStorage.setItem('recentRoomCode', roomCode);
   } else {
-    roomCode = ''; // Default or handle case when no room code is present
+    roomCode = '';
   }
 }
 
 // Save the room code to recent rooms in local storage
 function saveRecentRoom(roomCode) {
   let recentRooms = JSON.parse(localStorage.getItem('recentRooms')) || [];
-  recentRooms = recentRooms.filter(code => code !== roomCode); // Remove if it already exists
-  recentRooms.unshift(roomCode); // Add to the beginning
-  if (recentRooms.length > 5) recentRooms.pop(); // Keep only the last 5 rooms
+  recentRooms = recentRooms.filter(code => code !== roomCode);
+  recentRooms.unshift(roomCode);
+  if (recentRooms.length > 5) recentRooms.pop();
   localStorage.setItem('recentRooms', JSON.stringify(recentRooms));
 }
 
@@ -122,7 +120,7 @@ function displayRecentRooms() {
     recentRoomsContainer.innerHTML = '';
     recentRooms.forEach(roomCode => {
       const roomLink = document.createElement('a');
-      roomLink.href = `/Rizzcord/rooms/${roomCode}`;
+      roomLink.href = `rooms.html#${roomCode}`;
       roomLink.textContent = roomCode;
       roomLink.className = 'recent-room';
       recentRoomsContainer.appendChild(roomLink);
@@ -159,7 +157,7 @@ async function fetchData() {
     const data = await response.json();
     const display = document.getElementById('messageDisplay');
     if (display) {
-      display.innerHTML = ''; // Clear display before updating
+      display.innerHTML = '';
       let lastUsername = null;
       data.messages.forEach((msg, index) => {
         const newMessage = document.createElement('div');
@@ -189,20 +187,20 @@ async function fetchData() {
   }
 }
 
-// Function to join a room
+// Join a room
 function joinRoom() {
   const roomCode = document.getElementById('roomCodeInput').value.trim();
   if (roomCode !== '') {
-    window.location.href = `/Rizzcord/rooms/${roomCode}`;
+    window.location.href = `rooms.html#${roomCode}`;
   } else {
     alert('Please enter a room code.');
   }
 }
 
-// Function to create a new room
+// Create a new room
 function createRoom() {
   const roomCode = generateRoomCode();
-  window.location.href = `/Rizzcord/rooms/${roomCode}`;
+  window.location.href = `rooms.html#${roomCode}`;
 }
 
 // Generate a random room code
@@ -212,38 +210,29 @@ function generateRoomCode() {
 
 // Parse markup for formatting and emojis
 function parseMarkup(text) {
-  // Bold
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/__(.*?)__/g, '<strong>$1</strong>');
 
-  // Italic
   text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
   text = text.replace(/_(.*?)_/g, '<em>$1</em>');
 
-  // Strikethrough
   text = text.replace(/~~(.*?)~~/g, '<del>$1</del>');
 
-  // Headers
   text = text.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
   text = text.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
   text = text.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
 
-  // Unordered List
   text = text.replace(/^\* (.*?)$/gm, '<ul><li>$1</li></ul>');
   text = text.replace(/^- (.*?)$/gm, '<ul><li>$1</li></ul>');
   text = text.replace(/<\/ul>\n<ul>/g, '');
 
-  // Ordered List
   text = text.replace(/^\d+\. (.*?)$/gm, '<ol><li>$1</li></ol>');
   text = text.replace(/<\/ol>\n<ol>/g, '');
 
-  // Links
   text = text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
 
-  // Images
   text = text.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto;">');
 
-  // Emojis
   text = text.replace(/:([a-zA-Z0-9_+-]+):/g, (match, p1) => {
     const emojiUrl = `https://twemoji.maxcdn.com/v/latest/svg/${twemoji.convert.toCodePoint(p1)}.svg`;
     return `<img src="${emojiUrl}" class="emoji" alt="${p1}">`;
@@ -252,45 +241,34 @@ function parseMarkup(text) {
   return text;
 }
 
-// Simplified Emoji Rendering for specific emojis
+// Simplified Emoji Rendering
 function parseMarkup(text) {
-  // Bold
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/__(.*?)__/g, '<strong>$1</strong>');
 
-  // Italic
   text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
   text = text.replace(/_(.*?)_/g, '<em>$1</em>');
 
-  // Strikethrough
   text = text.replace(/~~(.*?)~~/g, '<del>$1</del>');
 
-  // Headers
   text = text.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
   text = text.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
   text = text.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
 
-  // Unordered List
   text = text.replace(/^\* (.*?)$/gm, '<ul><li>$1</li></ul>');
   text = text.replace(/^- (.*?)$/gm, '<ul><li>$1</li></ul>');
   text = text.replace(/<\/ul>\n<ul>/g, '');
 
-  // Ordered List
   text = text.replace(/^\d+\. (.*?)$/gm, '<ol><li>$1</li></ol>');
   text = text.replace(/<\/ol>\n<ol>/g, '');
 
-  // Links
   text = text.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
 
-  // Images
   text = text.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto;">');
 
-  // Simplified Emoji Rendering
   text = text.replace(/:smile:/g, '😊');
   text = text.replace(/:sob:/g, '😭');
   text = text.replace(/:pensive:/g, '😔');
   text = text.replace(/:heart:/g, '❤️');
-  // Add more emojis as needed...
-
   return text;
 }
