@@ -38,7 +38,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const pathSegments = window.location.hash.split('/');
     const mainContent = document.getElementById('mainContent');
     const roomContainer = document.querySelector('.room-container');
-
+  
+    if (!mainContent) {
+      console.error('mainContent element not found');
+      return;
+    }
+  
     switch (pathSegments[1]) {
       case 'chat':
         mainContent.innerHTML = '<h1>Chat</h1><div id="messageDisplay" class="message-display"></div><div class="input-area"><input type="text" id="messageInput" class="message-input" placeholder="Type your message here..." /></div>';
@@ -57,6 +62,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         break;
     }
   }
+  
 
   window.addEventListener('hashchange', hashHandler);
   hashHandler();
