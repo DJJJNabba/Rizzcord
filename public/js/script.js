@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
 
   displayRecentRooms();
-  initializeEmojiPicker();
 });
 
 let currentUsername = 'Anonymous';
