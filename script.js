@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const closeSettings = document.getElementById('closeSettings');
   const usernameInput = document.getElementById('username');
   const nameColorInput = document.getElementById('nameColor');
-  const chatLink = document.querySelector('nav a[href="index.html"]');
+  const chatLink = document.querySelector('nav a[href="#/chat"]');
+  const roomsLink = document.querySelector('nav a[href="#/rooms"]');
+  const aboutLink = document.querySelector('nav a[href="#/about"]');
 
   if (settingsBtn) {
     settingsBtn.addEventListener('click', () => {
@@ -31,7 +33,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
   }
 
-  // Call the hash handler initially and whenever the hash changes
+  // Function to handle navigation based on the hash
+  function hashHandler() {
+    const pathSegments = window.location.hash.split('/');
+    const mainContent = document.getElementById('mainContent');
+    const roomContainer = document.querySelector('.room-container');
+
+    switch (pathSegments[1]) {
+      case 'chat':
+        mainContent.innerHTML = '<h1>Chat</h1><div id="messageDisplay" class="message-display"></div><div class="input-area"><input type="text" id="messageInput" class="message-input" placeholder="Type your message here..." /></div>';
+        showChatRoom();
+        break;
+      case 'rooms':
+        mainContent.innerHTML = '<div class="room-container"><h2>Join a Room</h2><input type="text" id="roomCodeInput" placeholder="Enter Room Code"><button onclick="joinRoom()">Join Room</button><h2>Create a Room</h2><button onclick="createRoom()">Create Room</button><h2>Recent Rooms</h2><div id="recentRooms"></div></div>';
+        displayRecentRooms();
+        showRoomsPage();
+        break;
+      case 'about':
+        mainContent.innerHTML = '<h1>About Rizzcord</h1><p>Free instant messaging service for sigmas.</p>';
+        break;
+      default:
+        window.location.hash = '#/rooms';
+        break;
+    }
+  }
+
   window.addEventListener('hashchange', hashHandler);
   hashHandler();
 
@@ -55,15 +81,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
   displayRecentRooms();
 });
 
-function joinRoom() {
-  const roomCode = document.getElementById('roomCodeInput').value.trim();
-  if (roomCode !== '') {
-    window.location.href = `#/rooms/${roomCode}`;
-  } else {
-    alert('Please enter a room code.');
-  }
-}
-
 let currentUsername = 'Anonymous';
 let currentNameColor = '#FFFFFF';
 let roomCode = '';
@@ -81,35 +98,23 @@ function loadSettings() {
   }
 }
 
-// Hash handler to determine what content to show based on the URL hash
-function hashHandler() {
-  const pathSegments = window.location.hash.split('/');
-  if (pathSegments.length > 2 && pathSegments[1] === 'rooms') {
-    roomCode = pathSegments[2];
-    saveRecentRoom(roomCode);
-    localStorage.setItem('recentRoomCode', roomCode);
-    showChatRoom();
+function joinRoom() {
+  const roomCode = document.getElementById('roomCodeInput').value.trim();
+  if (roomCode !== '') {
+    window.location.href = `#/rooms/${roomCode}`;
   } else {
-    showRoomsPage();
+    alert('Please enter a room code.');
   }
 }
 
-function saveRecentRoom(roomCode) {
-  let recentRooms = JSON.parse(localStorage.getItem('recentRooms')) || [];
-  recentRooms = recentRooms.filter(code => code !== roomCode);
-  recentRooms.unshift(roomCode);
-  if (recentRooms.length > 5) recentRooms.pop();
-  localStorage.setItem('recentRooms', JSON.stringify(recentRooms));
-}
-
-// Function to show the chat room interface
 function showChatRoom() {
   document.getElementById('messageDisplay').style.display = 'block';
   document.querySelector('.input-area').style.display = 'block';
-  document.querySelector('.room-container').style.display = 'none';
+  if (document.querySelector('.room-container')) {
+    document.querySelector('.room-container').style.display = 'none';
+  }
 }
 
-// Function to show the rooms page interface
 function showRoomsPage() {
   const messageDisplay = document.getElementById('messageDisplay');
   const inputArea = document.querySelector('.input-area');
