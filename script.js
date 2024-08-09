@@ -155,7 +155,7 @@ async function sendData() {
 
 async function fetchData() {
   try {
-    const response = await fetch(`/Rizzcord/api/rooms/${roomCode}`);
+    const response = await fetch(`https://your-glitch-project.glitch.me/api/rooms/${roomCode}`);
     const data = await response.json();
     const display = document.getElementById('messageDisplay');
     if (display) {
@@ -188,6 +188,7 @@ async function fetchData() {
     console.error('Error fetching messages:', error);
   }
 }
+
 
 // Function to join a room
 function joinRoom() {
