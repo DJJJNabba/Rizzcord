@@ -31,32 +31,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
   }
 
-  // Redirect new users or open recent room for returning users
-  if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/Rizzcord/') {
-    const recentRoomCode = localStorage.getItem('recentRoomCode');
-    if (recentRoomCode) {
-      window.location.href = `rooms.html#${recentRoomCode}`;
-    } else {
-      window.location.href = 'rooms.html';
-    }
-  }
-
-  if (chatLink) {
-    chatLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      const recentRoomCode = localStorage.getItem('recentRoomCode');
-      if (recentRoomCode) {
-        window.location.href = `rooms.html#${recentRoomCode}`;
-      } else {
-        window.location.href = 'rooms.html';
-      }
-    });
-  }
+  // Call the hash handler initially and whenever the hash changes
+  window.addEventListener('hashchange', hashHandler);
+  hashHandler();
 
   loadSettings();
-  setRoomCode();
   fetchData();
-  setInterval(fetchData, 2000); // Fetch data every 2 seconds
+  setInterval(fetchData, 2000);
 
   const messageInput = document.getElementById('messageInput');
   if (messageInput) {
@@ -91,15 +72,16 @@ function loadSettings() {
   }
 }
 
-// Set room code from URL hash and save it to local storage
-function setRoomCode() {
+// Hash handler to determine what content to show based on the URL hash
+function hashHandler() {
   const pathSegments = window.location.hash.split('/');
   if (pathSegments.length > 2 && pathSegments[1] === 'rooms') {
     roomCode = pathSegments[2];
     saveRecentRoom(roomCode);
     localStorage.setItem('recentRoomCode', roomCode);
+    showChatRoom();
   } else {
-    roomCode = ''; // Default or handle case when no room code is present
+    showRoomsPage();
   }
 }
 
@@ -111,26 +93,19 @@ function saveRecentRoom(roomCode) {
   localStorage.setItem('recentRooms', JSON.stringify(recentRooms));
 }
 
-// Display the recent rooms
-function displayRecentRooms() {
-  const recentRooms = JSON.parse(localStorage.getItem('recentRooms')) || [];
-  const recentRoomsContainer = document.getElementById('recentRooms');
-  if (recentRoomsContainer) {
-    recentRoomsContainer.innerHTML = '';
-    recentRooms.forEach(roomCode => {
-      const roomLink = document.createElement('a');
-      roomLink.href = `#/rooms/${roomCode}`;
-      roomLink.textContent = roomCode;
-      roomLink.className = 'recent-room';
-      recentRoomsContainer.appendChild(roomLink);
-    });
-  }
+// Function to show the chat room interface
+function showChatRoom() {
+  document.getElementById('messageDisplay').style.display = 'block';
+  document.querySelector('.input-area').style.display = 'block';
+  document.querySelector('.room-container').style.display = 'none';
 }
 
-window.addEventListener('hashchange', function() {
-  setRoomCode();
-  fetchData();
-});
+// Function to show the rooms page interface
+function showRoomsPage() {
+  document.getElementById('messageDisplay').style.display = 'none';
+  document.querySelector('.input-area').style.display = 'none';
+  document.querySelector('.room-container').style.display = 'block';
+}
 
 async function sendData() {
   const message = document.getElementById('messageInput').value;
@@ -155,7 +130,7 @@ async function sendData() {
 
 async function fetchData() {
   try {
-    const response = await fetch(`https://your-glitch-project.glitch.me/api/rooms/${roomCode}`);
+    const response = await fetch(`/Rizzcord/api/rooms/${roomCode}`);
     const data = await response.json();
     const display = document.getElementById('messageDisplay');
     if (display) {
@@ -182,32 +157,11 @@ async function fetchData() {
         newMessage.appendChild(messageContent);
         display.appendChild(newMessage);
       });
-      twemoji.parse(display); // Render emojis
+      twemoji.parse(display);
     }
   } catch (error) {
     console.error('Error fetching messages:', error);
   }
-}
-
-
-// Function to join a room
-function joinRoom() {
-  const roomCode = document.getElementById('roomCodeInput').value.trim();
-  if (roomCode !== '') {
-    window.location.href = `#/rooms/${roomCode}`;
-  } else {
-    alert('Please enter a room code.');
-  }
-}
-
-// Function to create a new room
-function createRoom() {
-  const roomCode = generateRoomCode();
-  window.location.href = `#/rooms/${roomCode}`;
-}
-
-function generateRoomCode() {
-  return Math.random().toString(36).substring(2, 8);
 }
 
 function parseMarkup(text) {
