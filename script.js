@@ -90,14 +90,15 @@ function loadSettings() {
   }
 }
 
+// Set room code from URL hash and save it to local storage
 function setRoomCode() {
-  const hash = window.location.hash.substring(1); // Get the hash part of the URL
-  if (hash) {
-    roomCode = hash;
+  const pathSegments = window.location.hash.split('/');
+  if (pathSegments.length > 2 && pathSegments[1] === 'rooms') {
+    roomCode = pathSegments[2];
     saveRecentRoom(roomCode);
     localStorage.setItem('recentRoomCode', roomCode);
   } else {
-    roomCode = '';
+    roomCode = ''; // Default or handle case when no room code is present
   }
 }
 
@@ -109,6 +110,7 @@ function saveRecentRoom(roomCode) {
   localStorage.setItem('recentRooms', JSON.stringify(recentRooms));
 }
 
+// Display the recent rooms
 function displayRecentRooms() {
   const recentRooms = JSON.parse(localStorage.getItem('recentRooms')) || [];
   const recentRoomsContainer = document.getElementById('recentRooms');
@@ -116,13 +118,19 @@ function displayRecentRooms() {
     recentRoomsContainer.innerHTML = '';
     recentRooms.forEach(roomCode => {
       const roomLink = document.createElement('a');
-      roomLink.href = `rooms.html#${roomCode}`;
+      roomLink.href = `#/rooms/${roomCode}`;
       roomLink.textContent = roomCode;
       roomLink.className = 'recent-room';
       recentRoomsContainer.appendChild(roomLink);
     });
   }
 }
+
+window.addEventListener('hashchange', function() {
+  setRoomCode();
+  fetchData();
+});
+
 
 async function sendData() {
   const message = document.getElementById('messageInput').value;
@@ -181,18 +189,20 @@ async function fetchData() {
   }
 }
 
+// Function to join a room
 function joinRoom() {
   const roomCode = document.getElementById('roomCodeInput').value.trim();
   if (roomCode !== '') {
-    window.location.href = `rooms.html#${roomCode}`;
+    window.location.href = `#/rooms/${roomCode}`;
   } else {
     alert('Please enter a room code.');
   }
 }
 
+// Function to create a new room
 function createRoom() {
   const roomCode = generateRoomCode();
-  window.location.href = `rooms.html#${roomCode}`;
+  window.location.href = `#/rooms/${roomCode}`;
 }
 
 function generateRoomCode() {
